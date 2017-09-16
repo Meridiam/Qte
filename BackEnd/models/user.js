@@ -7,5 +7,5 @@ module.exports = mongoose.model('User', {
     firstname: String,
     lastname: String,
     bankID: String,
-    vendor: { type: Boolean, required: true, default: false }
+    isVendor: { type: Boolean, required: true, default: false }
 });

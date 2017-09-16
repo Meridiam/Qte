@@ -70,6 +70,8 @@ newUser.username = req.body.username;
 newUser.password = req.body.password;
 newUser.email = req.body.email;
 newUser.bankID = req.body.bankID;
+newUser.firstname = req.body.firstname;
+newUser.lastname = 
 
 // save the user
 User.findOne({ 'username': username },
