@@ -1,11 +1,17 @@
 <resources>
-    <string name="app_name">FrontEnd</string>
+    <string name="app_name">Qte</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_firstname">Firstname or Company Name</string>
+    <string name="prompt_Lastname">Lastname (Optional)</string>
+    <string name="prompt_customer_id">Customer ID</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_reentered">Re-enter Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="action_register">Register</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -13,4 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_register">Register using Capital One</string>
+    <string name="title_activity_scrolling_form">Registration Form</string>
+    <string name="action_settings">Settings</string>
 </resources>

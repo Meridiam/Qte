@@ -3,10 +3,14 @@ package com.example.android.frontend;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -30,18 +34,35 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.Manifest.permission.INTERNET;
 import static android.Manifest.permission.READ_CONTACTS;
-import static android.R.attr.button;
+import static android.R.attr.name;
+import static com.example.android.frontend.R.id.email;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -65,77 +86,96 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String jsonResponse;
+    private EditText customerID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
+        setContentView(R.layout.activity_register);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+//        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+//        populateAutoComplete();
+//
+//        mPasswordView = (EditText) findViewById(R.id.password);
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        txtResponse = (TextView) findViewById(R.id.txtResponse);
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
+//        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+//        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                attemptLogin();
+//            }
+//        });
+        jsonResponse = "";
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        Button registerButton= (Button) findViewById(R.id.email_register);
+        customerID = (EditText) findViewById(R.id.customer_id);
+
+        Button registerButton= (Button) findViewById(R.id.email_register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
 
+                makeJsonRequest();
+
+                Intent i = new Intent(RegisterActivity.this, RegistrationForm.class);
+
+                i.putExtra("product", customerID.getText().toString());
+                Log.v("CustomerIDDDD", customerID.getText().toString());
+                startActivity(i);
             }
         });
+    }
+
+    private void makeJsonRequest(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        final EditText customerID = (EditText) findViewById(R.id.customer_id);
+        String url = "http://qte-env.upxqgrh3im.us-east-1.elasticbeanstalk.com/confirmuser/" + customerID.getText().toString();
+        Log.d("custID", customerID.getText().toString());
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+            new Response.Listener<JSONObject>()
+            {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d("Response", response.toString());
+                    try {//59bc84eca73e4942cdafdcd3
+                        String first = response.getString("firstname");
+                        String last = response.getString("lastname");
+                        jsonResponse = customerID.getText().toString();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(),
+                                "Error: " + e.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("LOG", error.toString());
+                }
+            }
+        );
+
+        queue.add(getRequest);
     }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
         getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        //dont know what it does
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        //this checks if the permission is granted
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
     }
 
     /**
@@ -287,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(RegisterActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
