@@ -20,10 +20,8 @@ app.use(bodyParser.json());
 app.get('/confirmuser/:bankID', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.bankID + '?key=' + process.env.API_KEY).end(function(err,response){
         if (err){
-            res.setHeader('Content-Type', 'text/html');
             res.status(500).send({error: 'Can\'t find user info'});
         } else {
-            res.setHeader('Content-Type', 'application/json');
             res.json({firstname: response.body.first_name, lastname: response.body.last_name});
         }
     })
@@ -86,7 +84,6 @@ app.post('/newuser', function (req, res) {
 app.delete('/deluser', function (req, res) {
     User.findOneAndRemove({ username: req.body.username }, function (err, response) {
         if(err || !response) {
-            res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
             res.status(200).send('User ' + req.body.username + ' deleted.');
@@ -98,7 +95,6 @@ app.delete('/deluser', function (req, res) {
 app.post('/changepass', function (req, res) {
     User.findOneAndUpdate({ username: req.body.username }, { password: req.body.password }, function (err, response) {
         if(err || !response) {
-            res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
             res.status(200).send('Password changed.');
@@ -110,7 +106,6 @@ app.post('/changepass', function (req, res) {
 app.post('/changeid', function (req, res) {
     User.findOneAndUpdate({ username: req.body.username }, { bankID: req.body.bankID }, function (err, response) {
         if(err || !response) {
-            res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
             res.status(200).send('Bank ID changed.');
@@ -145,13 +140,11 @@ app.post('/pay/:username/:amount', function (req, res) {
                     } else {
                         request.post('http://api.reimaginebanking.com/accounts/' + payee.bankID + '/deposits?key=' + process.env.API_KEY, function(err,response) {
                             if(err) {
-                                res.setHeader('Content-Type', 'text/html');
                                 res.status(500).send({error: 'Failed to withdraw.'});
                             }
                         });
                         request.post('http://api.reimaginebanking.com/accounts/' + payer.bankID + '/withdrawals?key=' + process.env.API_KEY, function(err,response) {
                             if(err) {
-                                res.setHeader('Content-Type', 'text/html');
                                 res.status(500).send({error: 'Failed to deposit.'});
                             }
                         });
