@@ -22,7 +22,7 @@ app.get('/confirmuser/:id', function(req, res) {
             res.status(500).send({error: 'Can\'t find user info'});
         } else {
             res.setHeader('Content-Type', 'application/json');
-            res.json({firstname: response.body.first_name, lastname: response.body.last_name});
+            res.json({firstname: response.body.first_name, lastname: response.body.last_nam});
         }
     })
 });
