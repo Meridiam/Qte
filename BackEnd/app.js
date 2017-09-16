@@ -57,7 +57,8 @@ User.find({ '_id': req.params.id })
     .remove()
     .exec(function (err) {
         if (err) {
-            return done(err);
+            res.setHeader('Content-Type', 'text/html');
+            res.status(500).send({ error: '' });
         }
         res.redirect('/members');
     });
@@ -79,7 +80,8 @@ newUser.password = req.body.password;
 newUser.email = req.body.email;
 newUser.bankID = req.body.bankID;
 newUser.firstname = req.body.firstname;
-newUser.lastname = 
+newUser.lastname = req.body.lastname;
+newUser.isVendor = req.body.isVendor;
 
 // save the user
 User.findOne({ 'username': username },
@@ -92,30 +94,18 @@ function (err, user) {
         newUser.save(function (err) {
             if (err) {
                 console.log('Error in Saving user: ' + err);
-                throw err;
+                res.status(500).send({ error: 'Error while creating user.' });
             }
             if (!err) {
-                return done(null, user);
+                res.status(200).send('OK');
             }
         });
+    } else if (user) {
+        res.status(500).send({ error: 'User already exists.' });
     }
     return done(null, user);
 }
 );
-newUser.save(function (err) {
-    if (err) {
-        console.log('Error in Saving user: ' + err);
-        throw err;
-    }
-    if (!err) {
-        User.find()
-            .populate('author')
-            .exec(function (err, posts) {
-                console.log(JSON.stringify(posts, null, "\t"))
-            });
-        res.redirect('/');
-    }
-});
 });
 
 //API for READing Event data
