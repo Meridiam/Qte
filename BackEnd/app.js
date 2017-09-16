@@ -141,7 +141,31 @@ app.post('/pay/:email/:amount', function (req, res) {
                     if (req.params.amount > getBalance(req.body.email)){
                         res.status(500).send('Insufficient Funds.');
                     } else {
-                        
+                        request.post('http://api.reimaginebanking.com/accounts/' + payee.bankID + '/deposits?key=' + process.env.API_KEY, function(err,response) {
+                            if(err) {
+                                res.setHeader('Content-Type', 'text/html');
+                                res.status(500).send({error: 'Failed to withdraw.'});
+                            }
+                        });
+                        request.post('http://api.reimaginebanking.com/accounts/' + payer.bankID + '/withdrawals?key=' + process.env.API_KEY, function(err,response) {
+                            if(err) {
+                                res.setHeader('Content-Type', 'text/html');
+                                res.status(500).send({error: 'Failed to deposit.'});
+                            }
+                        });
+                        var newTrans = new Transaction();
+                        newTrans.payer = payer;
+                        newTrans.payee = payee;
+                        newTrans.amount = req.params.amount;
+                        payer.recentTransactions.append(newTrans);
+                        payee.recentTransactions.append(newTrans);
+                        newTrans.save(function (err){
+                            if(err) {
+                                res.status(500).send({error: 'Couldn\'t save transaction.'});
+                            } else {
+                                res.status(200).send('Transaction successful!');
+                            }
+                        });
                     }
                 }
             });
