@@ -86,7 +86,7 @@ app.delete('/deluser', function(req, res) {
     User.findOneAndRemove({username: req.body.username}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user: ' + req.body.username;
+            res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
             res.status(200).send('User ' + req.body.username + ' deleted.');
         }
@@ -94,13 +94,8 @@ app.delete('/deluser', function(req, res) {
 });
 
 // Update password
-<<<<<<< HEAD
-app.put('/changepass/:username/:pass', function(req, res) {
-    User.findOneAndUpdate({ username: req.params.username }, { password: req.params.pass }, function(err, response) {
-=======
 app.put('/changepass/', function(req, res) {
     User.findOneAndUpdate({username: req.body.username}, {password: req.body.password}, function(err, response) {
->>>>>>> 3b7b54c9912c2acd09ad412a039f325b550ae2c3
         if(err || !response) {
             res.setHeader('Content-type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
