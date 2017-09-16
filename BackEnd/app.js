@@ -31,18 +31,6 @@ Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) 
 });
 });
 
-//sends the request through local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
-
-//sends the request through local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-
-//logs user out of site, deleting them from the session, and returns to homepage
-
-//User/Admin Management Panel
-
-//Render reset password screen
-
-//API for deleting users
-
 // Get user info from CapitalOne
 app.get('/getuserinfo/:id', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
