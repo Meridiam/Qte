@@ -2,8 +2,6 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     request = require('superagent');
 
-//987d4c350d2523a6305b2d44c1108509
-
 //Create app instance
 var app = express();
 //Connect to MongoDB
@@ -15,27 +13,6 @@ var User = require('./models/user.js');
 //Express Configuration
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-//displays homepage
-app.get('/', function (req, res) {
-Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) {
-    Event.find({
-        happens: {
-            $gte: new Date()
-        }
-    })
-        .sort('happens')
-        .exec(function (err, events) {
-            res.render('home', {
-                user: req.user,
-                news: posts,
-                events: events,
-                message: req.flash('message'),
-                resetPass: req.flash('resetPass')
-            });
-        });
-});
-});
 
 // Get user info from CapitalOne
 app.get('/confirmuser/:id', function(req, res) {
