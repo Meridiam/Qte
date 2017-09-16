@@ -32,18 +32,8 @@ Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) 
 });
 
 //sends the request through local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/getinfo', passport.authenticate('local-signup', {
-successRedirect: '/',
-failureRedirect: '/signup'
-})
-);
 
 //sends the request through local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/login', passport.authenticate('local-signin', {
-successRedirect: '/',
-failureRedirect: '/'
-})
-);
 
 //logs user out of site, deleting them from the session, and returns to homepage
 
@@ -52,17 +42,6 @@ failureRedirect: '/'
 //Render reset password screen
 
 //API for deleting users
-app.get('/deluser/:id', isAdmin, function (req, res) {
-User.find({ '_id': req.params.id })
-    .remove()
-    .exec(function (err) {
-        if (err) {
-            res.setHeader('Content-Type', 'text/html');
-            res.status(500).send({ error: '' });
-        }
-        res.redirect('/members');
-    });
-});
 
 // Get user info from CapitalOne
 app.get('/getuserinfo/:id', function(req, res) {
@@ -109,122 +88,6 @@ function (err, user) {
 });
 
 //API for READing Event data
-app.get('/event/:id', isRegistered, function (req, res) {
-Event.findOne({ '_id': req.params.id },
-    function (err, event) {
-        // In case of any error, return using the done method
-        if (err) {
-            return done(err);
-        }
-        if (req.user.events.indexOf(req.params.id) > -1) {
-            console.log('This event is in your events');
-            if (req.user.admin) {
-                res.render('event', {
-                    event: event,
-                    admin: true
-                })
-            } else {
-                res.render('event', {
-                    event: event
-                })
-            }
-        } else {
-            console.log('This event is not your events');
-            if (req.user.admin) {
-                res.render('event', {
-                    event: event,
-                    admin: true,
-                    inevents: 'no'
-                })
-            } else {
-                res.render('event', {
-                    event: event,
-                    inevents: 'no'
-                })
-            }
-        }
-    }
-);
-});
-
-//API for adding Events to Users
-app.get('/addevent/:id', isRegistered, function (req, res) {
-User.findByIdAndUpdate(
-    req.user,
-    { $push: { 'events': req.params.id } },
-    { safe: true, upsert: true, new: true },
-    function (err, user) {
-        if (err) {
-            console.log(err);
-            return done(err);
-        }
-        User.find({})
-            .populate('events')
-            .exec(function (err, user) {
-                console.log(JSON.stringify(user, null, "\t"));
-            });
-        res.redirect('/members');
-    }
-);
-});
-
-//API for removing Events from Users
-app.get('/rmevent/:id', isRegistered, function (req, res) {
-User.findByIdAndUpdate(
-    req.user,
-    { $pull: { 'events': req.params.id } },
-    { safe: true, upsert: true, new: true },
-    function (err, user) {
-        if (err) {
-            console.log(err);
-            return done(err);
-        }
-        User.find({})
-            .exec(function (err, user) {
-                console.log(JSON.stringify(user, null, "\t"));
-            });
-        res.redirect('/members');
-    }
-);
-});
-
-//API for UPDATING User password field w/password verification & admin privileges
-app.post('/resetpwd/:id', isRegistered, function (req, res) {
-User.findOne({ '_id': req.params.id })
-    .exec(function (err, user) {
-        if (err) {
-            return done(err);
-        }
-        console.log('old password hash is : ' + user.password);
-        if (req.user.admin) {
-            User.findOneAndUpdate({ '_id': req.params.id }, {
-                $set:
-                {
-                    password: createHash(req.body.password)
-                }
-            }, function (err, user) {
-                console.log('password has reset to: ' + user.password);
-                req.flash('resetPass', 'Successfully Changed Password');
-                res.redirect("/");
-            });
-        } else {
-            if (bCrypt.compareSync(req.body.oldpass, user.password)) {
-                User.findOneAndUpdate({ '_id': req.params.id }, {
-                    $set: {
-                        password: createHash(req.body.password)
-                    }
-                }, function (err, user) {
-                    console.log('password has reset to: ' + user.password);
-                    req.flash('resetPass', 'Successfully Changed Password');
-                    res.redirect("/");
-                });
-            } else {
-                req.flash('message', 'Incorrect Old Password');
-                res.render('resetpwd', { message: req.flash('message') });
-            }
-        }
-    });
-});
 
 /*
 ===========AUXILIARY FUNCTIONS============
