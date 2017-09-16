@@ -70,7 +70,21 @@ app.delete('/deluser/:id', function(req, res) {
     User.findByIdAndRemove(req.params.id, function(err, response) {
         if(err) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user id ' + req.params.id);
+            res.status(500).send('Can\'t find user id: ' + req.params.id);
+        } else {
+            res.status(200).send('User ' + req.params.id + ' deleted.');
+        }
+    });
+});
+
+// Update password
+app.put('/changepass/:id/:pass', function(req, res) {
+    User.findByIdAndUpdate(req.params.id, {pass: req.params.pass}, function(err, response) {
+        if(err) {
+            res.setHeader('Content-type', 'text/html');
+            res.status(500).send('Can\'t find user id: ' + req.params.id);
+        } else {
+            res.status(200).send('Password changed.');
         }
     })
 });
