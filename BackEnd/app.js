@@ -65,6 +65,16 @@ function (err, user) {
 );
 });
 
+// Delete user
+app.delete('/deluser/:id', function(req, res) {
+    User.findByIdAndRemove(req.params.id, function(err, response) {
+        if(err) {
+            res.setHeader('Content-type', 'text/html');
+            res.status(500).send('Can\'t find user id ' + req.params.id);
+        }
+    })
+});
+
 //API for READing Event data
 
 /*
