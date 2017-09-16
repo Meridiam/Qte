@@ -63,6 +63,13 @@ User.find({ '_id': req.params.id })
     });
 });
 
+// Get user info from CapitalOne
+app.get('/getuserinfo/:id', function(req, res) {
+    request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
+        
+    })
+});
+
 //API for creating posts through HTTP POST
 app.post('/newuser', function (req, res) {
 
