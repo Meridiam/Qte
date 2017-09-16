@@ -72,7 +72,7 @@ app.delete('/deluser/:username', function(req, res) {
             res.setHeader('Content-type', 'text/html');
             res.status(500).send('Can\'t find user id: ' + req.params.id);
         } else {
-            res.status(200).send('User ' + req.params.id + ' deleted.');
+            res.status(200).send('User ' + req.params.username + ' deleted.');
         }
     });
 });
@@ -82,7 +82,7 @@ app.put('/changepass/:username/:pass', function(req, res) {
     User.findOneAndUpdate({username: req.params.username}, {password: req.params.pass}, function(err, response) {
         if(err) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user id: ' + req.params.id);
+            res.status(500).send('Can\'t find user id: ' + req.params.username);
         } else {
             res.status(200).send('Password changed.');
         }
