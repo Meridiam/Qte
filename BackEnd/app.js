@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 // Get user info from CapitalOne
 app.get('/confirmuser/:id', function(req, res) {
-    request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
+    request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(err,response){
         if(err){
             res.setHeader('Content-Type', 'text/html');
             res.status(500).send({error: 'Can\'t find user info'});
