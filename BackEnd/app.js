@@ -66,8 +66,8 @@ function (err, user) {
 });
 
 // Delete user
-app.delete('/deluser/:id', function(req, res) {
-    User.findByIdAndRemove(req.params.id, function(err, response) {
+app.delete('/deluser/:username', function(req, res) {
+    User.findOneAndRemove({username: req.params.username}, function(err, response) {
         if(err) {
             res.setHeader('Content-type', 'text/html');
             res.status(500).send('Can\'t find user id: ' + req.params.id);
@@ -78,8 +78,8 @@ app.delete('/deluser/:id', function(req, res) {
 });
 
 // Update password
-app.put('/changepass/:id/:pass', function(req, res) {
-    User.findByIdAndUpdate(req.params.id, {pass: req.params.pass}, function(err, response) {
+app.put('/changepass/:username/:pass', function(req, res) {
+    User.findOneAndUpdate({username: req.params.username}, {password: req.params.pass}, function(err, response) {
         if(err) {
             res.setHeader('Content-type', 'text/html');
             res.status(500).send('Can\'t find user id: ' + req.params.id);
@@ -88,6 +88,8 @@ app.put('/changepass/:id/:pass', function(req, res) {
         }
     })
 });
+
+// 
 
 //API for READing Event data
 
