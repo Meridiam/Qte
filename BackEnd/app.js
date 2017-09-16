@@ -33,7 +33,7 @@ app.get('/confirmuser/:id', function(req, res) {
 
 //API for creating posts through HTTP POST
 app.post('/newuser', function (req, res) {
-
+res.send(req);
 var newUser = new User();
 newUser.username = req.body.username;
 newUser.password = req.body.password;
@@ -44,7 +44,7 @@ newUser.lastname = req.body.lastname;
 newUser.isVendor = req.body.isVendor;
 
 // save the user
-User.findOne({ 'username': username },
+User.findOne({ 'username': req.body.username },
 function (err, user) {
     // In case of any error
     if (err)
