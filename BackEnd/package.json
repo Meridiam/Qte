@@ -9,9 +9,9 @@
     "superagent": "^3.6.0"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node main.js"
   },
-  "main": "app.js",
+  "main": "main.js",
   "author": "",
   "license": "ISC",
   "description": ""
