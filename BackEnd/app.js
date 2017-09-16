@@ -50,35 +50,34 @@ app.post('/data/:email', function(req, res) {
 //API for creating users through HTTP POST
 app.post('/newuser', function (req, res) {
 
-var newUser = new User();
-newUser.email = req.body.email;
-newUser.password = req.body.password;
-newUser.bankID = req.body.bankID;
+    var newUser = new User();
+    newUser.email = req.body.email;
+    newUser.password = req.body.password;
+    newUser.bankID = req.body.bankID;
 
-// save the user
-User.findOne({ 'email': req.body.email },
-function (err, user) {
-    // In case of any error
-    if (err)
-        res.status(500).send({ error: 'Error while confirming unique account.' });
-    // Email does not exist, log error & redirect back
-    if (!user) {
-        newUser.save(function (err) {
-            if (err) {
-                console.log('Error in Saving user: ' + err);
-                res.status(500).send({ error: 'Error while creating user.' });
-            }
-            if (!err) {
-                res.status(200).send('User registered.');
-            }
-        });
-    } else if (user) {
-        res.status(500).send({ error: 'User already exists.' });
-    } else {
-        res.status(500).send({ error: 'Something blew up.' });
-    }
-}
-);
+    // save the user
+    User.findOne({ 'email': req.body.email },
+    function (err, user) {
+        // In case of any error
+        if (err)
+            res.status(500).send({ error: 'Error while confirming unique account.' });
+        // Email does not exist, log error & redirect back
+        if (!user) {
+            newUser.save(function (err) {
+                if (err) {
+                    console.log('Error in Saving user: ' + err);
+                    res.status(500).send({ error: 'Error while creating user.' });
+                }
+                if (!err) {
+                    res.status(200).send('User registered.');
+                }
+            });
+        } else if (user) {
+            res.status(500).send({ error: 'User already exists.' });
+        } else {
+            res.status(500).send({ error: 'Something blew up.' });
+        }
+    });
 });
 
 // Delete user
@@ -94,7 +93,7 @@ app.delete('/deluser', function(req, res) {
 });
 
 // Update password
-app.post('/changepass/', function(req, res) {
+app.post('/changepass', function(req, res) {
     User.findOneAndUpdate({email: req.body.email}, {password: req.body.password}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-Type', 'text/html');
@@ -106,7 +105,7 @@ app.post('/changepass/', function(req, res) {
 });
 
 // Change bankID
-app.post('/changeid/', function(req, res) {
+app.post('/changeid', function(req, res) {
     User.findOneAndUpdate({email: req.body.email}, {bankID: req.body.bankID}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-Type', 'text/html');
