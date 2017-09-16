@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 
 // Confirm user registration info from CapitalOne
 
-app.get('/confirmuser/:id', function(req, res) {
-    request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(err,response){
+app.get('/confirmuser/:bankID', function(req, res) {
+    request.get('http://api.reimaginebanking.com/customers/' + req.params.bankID + '?key=' + process.env.API_KEY).end(function(err,response){
         if (err){
             res.setHeader('Content-Type', 'text/html');
             res.status(500).send({error: 'Can\'t find user info'});
@@ -30,8 +30,8 @@ app.get('/confirmuser/:id', function(req, res) {
 });
 
 // Get user info from CapitalOne for client-side rendering
-app.get('/data/:email', function(req, res) {
-    User.findOne({ 'email': req.param.email }, function (err, user) {
+app.get('/data/:username', function(req, res) {
+    User.findOne({ 'username': req.param.username }, function (err, user) {
         if (err) {
             res.status(500).send({ error: 'User does not exist.' });
         } else {
@@ -58,12 +58,12 @@ app.post('/newuser', function (req, res) {
     newUser.bankID = req.body.bankID;
 
     // save the user
-    User.findOne({ 'email': req.body.username },
+    User.findOne({ 'username': req.body.username },
     function (err, user) {
         // In case of any error
         if (err)
             res.status(500).send({ error: 'Error while confirming unique account.' });
-        // Email does not exist, log error & redirect back
+        // Username does not exist, log error & redirect back
         if (!user) {
             newUser.save(function (err) {
                 if (err) {
@@ -96,7 +96,7 @@ app.delete('/deluser', function (req, res) {
 
 // Update password
 app.post('/changepass', function (req, res) {
-    User.findOneAndUpdate({ email: req.body.username }, { password: req.body.password }, function (err, response) {
+    User.findOneAndUpdate({ username: req.body.username }, { password: req.body.password }, function (err, response) {
         if(err || !response) {
             res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
@@ -108,7 +108,7 @@ app.post('/changepass', function (req, res) {
 
 // Change bankID
 app.post('/changeid', function (req, res) {
-    User.findOneAndUpdate({ email: req.body.username }, { bankID: req.body.bankID }, function (err, response) {
+    User.findOneAndUpdate({ username: req.body.username }, { bankID: req.body.bankID }, function (err, response) {
         if(err || !response) {
             res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
@@ -120,7 +120,7 @@ app.post('/changeid', function (req, res) {
 
 //Change email
 app.post('/changeemail', function (req, res) {
-    User.findOneAndUpdate({ email: req.body.username }, { email: req.body.email }, function (err, response){
+    User.findOneAndUpdate({ username: req.body.username }, { email: req.body.email }, function (err, response){
         if (err || !response) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else { 
@@ -130,8 +130,8 @@ app.post('/changeemail', function (req, res) {
 });
 
 //Transaction Processing
-app.post('/pay/:email/:amount', function (req, res) {
-    User.findOne({ email: req.body.username }, function (err, payee) {
+app.post('/pay/:username/:amount', function (req, res) {
+    User.findOne({ username: req.body.username }, function (err, payee) {
         if (err || !payee) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
