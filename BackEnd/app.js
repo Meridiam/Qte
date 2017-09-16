@@ -138,13 +138,19 @@ app.post('/pay/:username/:amount', function (req, res) {
                     if (req.params.amount > getBalance(req.body.username)){
                         res.status(500).send('Insufficient Funds.');
                     } else {
-                        var transactjson = {medium: "balance", transaction_date: Date.now().toString(), amount: req.params.amount, description: "Qte"};
-                        request.post('http://api.reimaginebanking.com/accounts/' + payee.bankID + '/deposits?key=' + process.env.API_KEY).send(transactjson).end(function(err,response) {
+                        //var transactjson = {medium: "balance", transaction_date: Date.now().toString(), amount: req.params.amount, description: "Qte"};
+                        request.post('http://api.reimaginebanking.com/accounts/' + payee.bankID + '/deposits?key=' + process.env.API_KEY)
+                        .set("Content-Type", "application/json")
+                        .send('{medium: "balance", transaction_date: Date.now().toString(), amount: req.params.amount, description: "Qte"}')
+                        .end(function(err,response) {
                             if(err) {
                                 res.status(500).send({error: 'Failed to withdraw.'});
                             }
                         });
-                        request.post('http://api.reimaginebanking.com/accounts/' + payer.bankID + '/withdrawals?key=' + process.env.API_KEY).send(transactjson).end(function(err,response) {
+                        request.post('http://api.reimaginebanking.com/accounts/' + payer.bankID + '/withdrawals?key=' + process.env.API_KEY)
+                        .set("Content-Type", "application/json")
+                        .send('{medium: "balance", transaction_date: Date.now().toString(), amount: req.params.amount, description: "Qte"}')
+                        .end(function(err,response) {
                             if(err) {
                                 res.status(500).send({error: 'Failed to deposit.'});
                             }
