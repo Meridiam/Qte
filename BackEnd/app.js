@@ -26,13 +26,8 @@ Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) 
 });
 });
 
-//displays signup page
-app.get('/signup', function (req, res) {
-res.render('signup', { message: req.flash('message') });
-});
-
 //sends the request through local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/local-reg', passport.authenticate('local-signup', {
+app.post('/getinfo', passport.authenticate('local-signup', {
 successRedirect: '/',
 failureRedirect: '/signup'
 })
@@ -46,42 +41,10 @@ failureRedirect: '/'
 );
 
 //logs user out of site, deleting them from the session, and returns to homepage
-app.get('/logout', isRegistered, function (req, res) {
-var name = req.user.username;
-console.log("LOGGING OUT " + req.user.username);
-req.logout();
-res.redirect('/');
-req.session.notice = "You have successfully been logged out " + name + "!";
-});
+
 //User/Admin Management Panel
-app.get('/members', isRegistered, function (req, res) {
-User.find()
-    .sort({ lowerLast: 1 })
-    .exec(function (err, users) {
-        Event.find()
-            .sort('-happens')
-            .exec(function (err, events) {
-                User.findOne({ '_id': req.user._id })
-                    .populate('events')
-                    .exec(function (err, user) {
-                        res.render('members', {
-                            user: req.user,
-                            members: users,
-                            events: events,
-                            personals: user.events
-                        });
-                    });
-                console.log(JSON.stringify(users, null, "\t"));
-            });
-    });
-});
 
 //Render reset password screen
-app.get('/resetpass/:id', isRegistered, function (req, res) {
-res.render('resetpwd', {
-    'user': req.params.id
-})
-});
 
 //API for deleting users
 app.get('/deluser/:id', isAdmin, function (req, res) {
@@ -125,68 +88,12 @@ newPost.save(function (err) {
 });
 
 //API for deleting posts
-app.get('/delpost/:id', isAdmin, function (req, res) {
-Post.find({ '_id': req.params.id })
-    .remove()
-    .exec(function (err) {
-        if (err) {
-            return done(err);
-        }
-        res.redirect('/');
-    });
-});
 
 //API for creating new events through HTTP POST
-app.post('/newevent', isAdmin, function (req, res) {
-var title = req.body.name;
-var text = req.body.desc;
-var date = req.body.date;
-var duration = req.body.dur;
-
-var newEvent = new Event();
-newEvent.name = title;
-newEvent.desc = text;
-newEvent.date = date;
-newEvent.happens = new Date(date);
-newEvent.duration = duration;
-
-//save the user
-newEvent.save(function (err) {
-    if (err) {
-        console.log('Error in Saving user: ' + err);
-        throw err;
-    }
-    res.redirect('/');
-});
-});
 
 //API for deleting events
-app.get('/delevent/:id', isAdmin, function (req, res) {
-Event.find({ '_id': req.params.id })
-    .remove()
-    .exec(function (err) {
-        if (err) {
-            return done(err);
-        }
-        res.redirect('/members');
-    });
-});
 
 //API for READing User data
-app.get('/member/:id', isAdmin, function (req, res) {
-User.findOne({ '_id': req.params.id },
-    function (err, user) {
-        // In case of any error, return using the done method
-        if (err) {
-            return done(err);
-        }
-        res.render('member', {
-            user: user,
-            admin: req.user.admin
-        })
-    }
-);
-});
 
 //API for READing Event data
 app.get('/event/:id', isRegistered, function (req, res) {
