@@ -5,33 +5,6 @@ var app = express();
 //Connect to MongoDB
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
-//Load Models
-
-/*
-=============AUXILIARY FUNCTIONS==============
-*/
-
-
-/*
-================USER AUTHENTICATION================
-*/
-
-//==============AUXILIARY FUNCTION===============
-
-//===============================================
-
-//==============AUXILIARY FUNCTION===============
-
-//===============================================
-
-//===============EXPRESS================
-// Configure Express
-
-// Session-persisted message middleware
-
-// Configure express to use handlebars templates
-
-//===============ROUTES=================
 //displays homepage
 app.get('/', function (req, res) {
 Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) {
@@ -80,11 +53,6 @@ req.logout();
 res.redirect('/');
 req.session.notice = "You have successfully been logged out " + name + "!";
 });
-
-/*
-===========Management Routes============
-*/
-
 //User/Admin Management Panel
 app.get('/members', isRegistered, function (req, res) {
 User.find()
@@ -114,10 +82,6 @@ res.render('resetpwd', {
     'user': req.params.id
 })
 });
-
-/*
-=============CRUD ROUTES=============
-*/
 
 //API for deleting users
 app.get('/deluser/:id', isAdmin, function (req, res) {
