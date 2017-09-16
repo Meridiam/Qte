@@ -86,9 +86,9 @@ function (err, user) {
 // Delete user
 app.delete('/deluser/:username', function(req, res) {
     User.findOneAndRemove({username: req.params.username}, function(err, response) {
-        if(err) {
+        if(err || !response) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user id: ' + req.params.id);
+            res.status(500).send('Can\'t find user: ' + req.params.id);
         } else {
             res.status(200).send('User ' + req.params.username + ' deleted.');
         }
@@ -98,9 +98,9 @@ app.delete('/deluser/:username', function(req, res) {
 // Update password
 app.put('/changepass/:username/:pass', function(req, res) {
     User.findOneAndUpdate({username: req.params.username}, {password: req.params.pass}, function(err, response) {
-        if(err) {
+        if(err || !response) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user id: ' + req.params.username);
+            res.status(500).send('Can\'t find user: ' + req.params.username);
         } else {
             res.status(200).send('Password changed.');
         }
