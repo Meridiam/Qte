@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Confirm user registration info from CapitalOne
+
 app.get('/confirmuser/:id', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(err,response){
         if(err){
@@ -22,13 +23,12 @@ app.get('/confirmuser/:id', function(req, res) {
             res.status(500).send({error: 'Can\'t find user info'});
         } else {
             res.setHeader('Content-Type', 'application/json');
-            res.json({firstname: response.body.first_name, lastname: response.body.last_nam});
+            res.json({firstname: response.body.first_name, lastname: response.body.last_name});
         }
     })
 });
 
 // Get user info from CapitalOne for client-side rendering
-/*
 app.post('/data/:email', function(req, res) {
     User.findOne({ 'email': req.param.email }, function (err, user) {
         if (err) {
@@ -45,7 +45,7 @@ app.post('/data/:email', function(req, res) {
         }
     });
 });
-*/
+
 
 //API for creating users through HTTP POST
 app.post('/newuser', function (req, res) {
