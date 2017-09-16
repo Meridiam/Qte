@@ -51,7 +51,7 @@ app.get('/confirmuser/:id', function(req, res) {
             res.status(500).send({error: 'Can\'t find user info'});
         } else {
             res.setHeader('Content-Type', 'application/json');
-            res.json({firstname: res.body.first_name, lastname: res.body.last_name, address: res.body.address});
+            res.json({firstname: response.body.first_name, lastname: response.body.last_name, address: response.body.address});
         }
     })
 });
