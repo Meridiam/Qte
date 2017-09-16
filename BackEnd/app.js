@@ -130,15 +130,19 @@ app.post('/changeemail', function (req, res) {
 
 //Transaction Processing
 app.post('/pay/:email/:amount', function (req, res) {
-    User.findOne({ email: req.body.email }, function (err, response) {
-        if (err || !response) {
+    User.findOne({ email: req.body.email }, function (err, payee) {
+        if (err || !payee) {
             res.status(500).send('Can\'t find user: ' + req.body.email);
         } else {
-            User.findOne({ email: req.params.email }, function (err, response) {
-                if (err || !response){
+            User.findOne({ email: req.params.email }, function (err, payer) {
+                if (err || !payer){
                     res.status(500).send('Can\'t find user: ' + req.params.email);
                 } else {
-                    if ()
+                    if (req.params.amount > getBalance(req.body.email)){
+                        res.status(500).send('Insufficient Funds.');
+                    } else {
+                        
+                    }
                 }
             });
         }
@@ -172,13 +176,20 @@ function isAdmin(req, res, next) {
 }
 
 //Get a customer account
-function getBalance(BankID) {
-    request.get('http://api.reimaginebanking.com/customers/' + user.bankID + '?key=' + process.env.API_KEY)
-        .end( function( err,response ) {
-        if (err) {
-            res.status(500).send({ error: 'Can\'t find user info' });
+function getBalance(Email) {
+    User.findOne({ 'email': Email }, function (err, user) {
+        if (err || !user){
+            res.status(500)
+                .send('Can\'t find user: ' + Email);
         } else {
-            return response.body.balance;
+            request.get('http://api.reimaginebanking.com/customers/' + user.bankID + '?key=' + process.env.API_KEY)
+            .end( function( err,response ) {
+            if (err) {
+                res.status(500).send({ error: 'Can\'t find user info' });
+            } else {
+                return response.body.balance;
+            }
+        });
         }
     });
 }
