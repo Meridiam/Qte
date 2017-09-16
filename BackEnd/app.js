@@ -42,9 +42,9 @@ newUser.isVendor = req.body.isVendor;
 // save the user
 User.findOne({ 'username': username },
 function (err, user) {
-    // In case of any error, return using the done method
+    // In case of any error
     if (err)
-        return done(err);
+        res.status(500).send({ error: 'Error while confirming username availability.' });
     // Username does not exist, log error & redirect back
     if (!user) {
         newUser.save(function (err) {
@@ -58,8 +58,9 @@ function (err, user) {
         });
     } else if (user) {
         res.status(500).send({ error: 'User already exists.' });
+    } else {
+        res.status(500).send({ error: 'Something blew up.' });
     }
-    return done(null, user);
 }
 );
 });
