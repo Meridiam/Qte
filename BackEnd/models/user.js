@@ -7,5 +7,6 @@ module.exports = mongoose.model('User', {
     firstname: String,
     lastname: String,
     bankID: String,
+    recentTransactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
     isVendor: { type: Boolean, required: true, default: false }
 });
