@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
 //Load Models
 var User = require('./models/user.js');
+var Transaction = require('./models/transaction.js');
 
 //Express Configuration
 app.use(bodyParser.urlencoded({ extended: false }));
