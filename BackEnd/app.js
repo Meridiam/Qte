@@ -28,6 +28,7 @@ app.get('/confirmuser/:id', function(req, res) {
 });
 
 // Get user info from CapitalOne for client-side rendering
+/*
 app.put('/data/:username', function(req, res) {
     User.findOne({ 'username': req.param.username }, function (err, user) {
         if (err) {
@@ -44,18 +45,15 @@ app.put('/data/:username', function(req, res) {
         }
     });
 });
+*/
 
 //API for creating users through HTTP POST
 app.post('/newuser', function (req, res) {
 
 var newUser = new User();
-newUser.username = req.body.username;
-newUser.password = req.body.password;
 newUser.email = req.body.email;
+newUser.password = req.body.password;
 newUser.bankID = req.body.bankID;
-newUser.firstname = req.body.firstname;
-newUser.lastname = req.body.lastname;
-newUser.isVendor = req.body.isVendor;
 
 // save the user
 User.findOne({ 'username': req.body.username },
@@ -97,7 +95,7 @@ app.delete('/deluser/:username', function(req, res) {
 
 // Update password
 app.put('/changepass/:username/:pass', function(req, res) {
-    User.findOneAndUpdate({username: req.params.username}, {password: req.params.pass}, function(err, response) {
+    User.findOneAndUpdate({ username: req.params.username }, { password: req.params.pass }, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.params.username);
