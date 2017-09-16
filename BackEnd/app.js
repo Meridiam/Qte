@@ -9,6 +9,12 @@ var app = express();
 //Connect to MongoDB
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
+//Load Models
+var User = require('./models/user.js');
+
+//Express Configuration
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //displays homepage
 app.get('/', function (req, res) {
