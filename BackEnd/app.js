@@ -1,4 +1,5 @@
 var express = require('express'),
+    bodyParser = require('body-parser'),
 
 //Create app instance
 var app = express();
