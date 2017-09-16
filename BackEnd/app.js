@@ -14,13 +14,9 @@ var User = require('./models/user.js');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res){ 
-    res.send('hi');
-});
-
 // Get user info from CapitalOne
 app.get('/confirmuser/:id', function(req, res) {
-    request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
+    request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(err,response){
         if(err){
             res.setHeader('Content-Type', 'text/html');
             res.status(500).send({error: 'Can\'t find user info'});
@@ -67,6 +63,30 @@ function (err, user) {
     }
 }
 );
+});
+
+// Delete user
+app.delete('/deluser/:id', function(req, res) {
+    User.findByIdAndRemove(req.params.id, function(err, response) {
+        if(err) {
+            res.setHeader('Content-type', 'text/html');
+            res.status(500).send('Can\'t find user id: ' + req.params.id);
+        } else {
+            res.status(200).send('User ' + req.params.id + ' deleted.');
+        }
+    });
+});
+
+// Update password
+app.put('/changepass/:id/:pass', function(req, res) {
+    User.findByIdAndUpdate(req.params.id, {pass: req.params.pass}, function(err, response) {
+        if(err) {
+            res.setHeader('Content-type', 'text/html');
+            res.status(500).send('Can\'t find user id: ' + req.params.id);
+        } else {
+            res.status(200).send('Password changed.');
+        }
+    })
 });
 
 //API for READing Event data
