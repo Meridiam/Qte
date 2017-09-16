@@ -52,7 +52,7 @@ app.get('/data/:username', function(req, res) {
 app.post('/newuser', function (req, res) {
 
     var newUser = new User();
-    newUser.email = req.body.email;
+//    newUser.email = req.body.email;
     newUser.username = req.body.username
     newUser.password = req.body.password;
     newUser.bankID = req.body.bankID;
@@ -119,7 +119,7 @@ app.post('/changeid', function (req, res) {
 });
 
 //Change email
-app.post('/changeemail', function (req, res) {
+/*app.post('/changeemail', function (req, res) {
     User.findOneAndUpdate({ username: req.body.username }, { email: req.body.email }, function (err, response){
         if (err || !response) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
@@ -128,6 +128,7 @@ app.post('/changeemail', function (req, res) {
         }
     });
 });
+*/
 
 //Transaction Processing
 app.post('/pay/:username/:amount', function (req, res) {
