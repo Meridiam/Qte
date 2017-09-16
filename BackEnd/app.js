@@ -27,9 +27,9 @@ app.get('/confirmuser/:id', function(req, res) {
     })
 });
 
-//API for creating posts through HTTP POST
+//API for creating users through HTTP POST
 app.post('/newuser', function (req, res) {
-//res.send(req.body);
+
 var newUser = new User();
 newUser.username = req.body.username;
 newUser.password = req.body.password;
