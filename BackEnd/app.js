@@ -14,10 +14,6 @@ var User = require('./models/user.js');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res){ 
-    res.send('hi');
-});
-
 // Get user info from CapitalOne
 app.get('/confirmuser/:id', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
