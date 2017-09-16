@@ -46,7 +46,13 @@ Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) 
 // Get user info from CapitalOne
 app.get('/getuserinfo/:id', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
-        
+        if(err){
+            res.setHeader('Content-Type', 'text/html');
+            res.status(500).send({error: 'Can\'t find user info'});
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.json({firstname: res.body.first_name, lastname: res.body.last_name, address: res.body.address});
+        }
     })
 });
 
