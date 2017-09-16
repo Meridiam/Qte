@@ -29,7 +29,7 @@ app.get('/confirmuser/:id', function(req, res) {
 
 // Get user info from CapitalOne for client-side rendering
 /*
-app.put('/data/:email', function(req, res) {
+app.post('/data/:email', function(req, res) {
     User.findOne({ 'email': req.param.email }, function (err, user) {
         if (err) {
             res.status(500).send({ error: 'User does not exist.' });
@@ -94,7 +94,7 @@ app.delete('/deluser', function(req, res) {
 });
 
 // Update password
-app.put('/changepass/', function(req, res) {
+app.post('/changepass/', function(req, res) {
     User.findOneAndUpdate({email: req.body.email}, {password: req.body.password}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-Type', 'text/html');
@@ -106,7 +106,7 @@ app.put('/changepass/', function(req, res) {
 });
 
 // Change bankID
-app.put('/changeid/', function(req, res) {
+app.post('/changeid/', function(req, res) {
     User.findOneAndUpdate({email: req.body.email}, {bankID: req.body.bankID}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-Type', 'text/html');
