@@ -1,11 +1,14 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
 
+//987d4c350d2523a6305b2d44c1108509
+
 //Create app instance
 var app = express();
 //Connect to MongoDB
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
+
 //displays homepage
 app.get('/', function (req, res) {
 Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) {
@@ -60,25 +63,42 @@ User.find({ '_id': req.params.id })
 });
 
 //API for creating posts through HTTP POST
-app.post('/newpost', isAdmin, function (req, res) {
-var title = req.body.title,
-    html = md.render(req.body.info);
+app.post('/newuser', function (req, res) {
 
-var currentDate = new Date();
-var newPost = new Post();
-newPost.title = title;
-newPost.body = html;
-newPost.author = req.user._id;
-newPost.readableDate = currentDate.getMonth()+"/"+currentDate.getDay()+"/"+currentDate.getFullYear();
+var newUser = new User();
+newUser.username = req.body.username;
+newUser.password = req.body.password;
+newUser.email = req.body.email;
+newUser.bankID = req.body.bankID;
 
 // save the user
-newPost.save(function (err) {
+User.findOne({ 'username': username },
+function (err, user) {
+    // In case of any error, return using the done method
+    if (err)
+        return done(err);
+    // Username does not exist, log error & redirect back
+    if (!user) {
+        newUser.save(function (err) {
+            if (err) {
+                console.log('Error in Saving user: ' + err);
+                throw err;
+            }
+            if (!err) {
+                return done(null, user);
+            }
+        });
+    }
+    return done(null, user);
+}
+);
+newUser.save(function (err) {
     if (err) {
         console.log('Error in Saving user: ' + err);
         throw err;
     }
     if (!err) {
-        Post.find()
+        User.find()
             .populate('author')
             .exec(function (err, posts) {
                 console.log(JSON.stringify(posts, null, "\t"))
@@ -87,14 +107,6 @@ newPost.save(function (err) {
     }
 });
 });
-
-//API for deleting posts
-
-//API for creating new events through HTTP POST
-
-//API for deleting events
-
-//API for READing User data
 
 //API for READing Event data
 app.get('/event/:id', isRegistered, function (req, res) {
