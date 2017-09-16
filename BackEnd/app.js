@@ -97,7 +97,7 @@ app.delete('/deluser', function(req, res) {
 
 // Update password
 app.put('/changepass/', function(req, res) {
-    User.findOneAndUpdate({username: req.body.username}, {password: req.body.pass}, function(err, response) {
+    User.findOneAndUpdate({username: req.body.username}, {password: req.body.password}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.username);
