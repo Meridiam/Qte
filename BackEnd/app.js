@@ -69,7 +69,7 @@ function (err, user) {
                 res.status(500).send({ error: 'Error while creating user.' });
             }
             if (!err) {
-                res.status(200).send('OK');
+                res.status(200).send('User registered.');
             }
         });
     } else if (user) {
@@ -117,7 +117,16 @@ app.post('/changeid/', function(req, res) {
     })
 });
 
-//API for READing Event data
+//Change email
+app.post('/changeemail', function(req, res){
+    User.findOneAndUpdate({ email: req.body.oldemail }, { email: req.body.newemail }, function (err, response){
+        if (err || !response) {
+            res.status(500).send('Can\'t find user: ' + req.body.email);
+        } else { 
+            res.status(200).send('Email changed.');
+        }
+    });
+});
 
 /*
 ===========AUXILIARY FUNCTIONS============
