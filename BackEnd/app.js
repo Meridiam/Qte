@@ -29,8 +29,8 @@ app.get('/confirmuser/:id', function(req, res) {
 
 // Get user info from CapitalOne for client-side rendering
 /*
-app.put('/data/:username', function(req, res) {
-    User.findOne({ 'username': req.param.username }, function (err, user) {
+app.put('/data/:email', function(req, res) {
+    User.findOne({ 'email': req.param.email }, function (err, user) {
         if (err) {
             res.status(500).send({ error: 'User does not exist.' });
         } else {
@@ -56,12 +56,12 @@ newUser.password = req.body.password;
 newUser.bankID = req.body.bankID;
 
 // save the user
-User.findOne({ 'username': req.body.username },
+User.findOne({ 'email': req.body.email },
 function (err, user) {
     // In case of any error
     if (err)
-        res.status(500).send({ error: 'Error while confirming username availability.' });
-    // Username does not exist, log error & redirect back
+        res.status(500).send({ error: 'Error while confirming unique account.' });
+    // Email does not exist, log error & redirect back
     if (!user) {
         newUser.save(function (err) {
             if (err) {
@@ -83,22 +83,22 @@ function (err, user) {
 
 // Delete user
 app.delete('/deluser', function(req, res) {
-    User.findOneAndRemove({username: req.body.username}, function(err, response) {
+    User.findOneAndRemove({email: req.body.email}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user: ' + req.body.username);
+            res.status(500).send('Can\'t find user: ' + req.body.email);
         } else {
-            res.status(200).send('User ' + req.body.username + ' deleted.');
+            res.status(200).send('User ' + req.body.email + ' deleted.');
         }
     });
 });
 
 // Update password
 app.put('/changepass/', function(req, res) {
-    User.findOneAndUpdate({username: req.body.username}, {password: req.body.password}, function(err, response) {
+    User.findOneAndUpdate({email: req.body.email}, {password: req.body.password}, function(err, response) {
         if(err || !response) {
             res.setHeader('Content-type', 'text/html');
-            res.status(500).send('Can\'t find user: ' + req.body.username);
+            res.status(500).send('Can\'t find user: ' + req.body.email);
         } else {
             res.status(200).send('Password changed.');
         }
