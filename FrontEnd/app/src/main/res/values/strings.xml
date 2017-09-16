@@ -3,6 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
+<<<<<<< HEAD
     <string name="prompt_username">Username</string>
     <string name="prompt_firstname">Firstname or Company Name</string>
     <string name="prompt_Lastname">Lastname (Optional)</string>
@@ -11,6 +12,10 @@
     <string name="prompt_password_reentered">Re-enter Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
+=======
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+>>>>>>> bd465788b8b2f05d8cbcaef6fb4544b5861b33ae
     <string name="action_register">Register</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

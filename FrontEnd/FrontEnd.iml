@@ -13,7 +13,11 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
     </content>
+<<<<<<< HEAD
     <orderEntry type="inheritedJdk" />
+=======
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+>>>>>>> bd465788b8b2f05d8cbcaef6fb4544b5861b33ae
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
