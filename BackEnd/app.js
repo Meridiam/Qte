@@ -32,7 +32,7 @@ Post.find({}).sort('-created_at').populate('author').exec(function (err, posts) 
 });
 
 // Get user info from CapitalOne
-app.get('/getuserinfo/:id', function(req, res) {
+app.get('/confirmuser/:id', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.id + '?key=' + process.env.API_KEY).end(function(response){
         if(err){
             res.setHeader('Content-Type', 'text/html');
