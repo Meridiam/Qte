@@ -85,7 +85,7 @@ function (err, user) {
 app.delete('/deluser', function(req, res) {
     User.findOneAndRemove({email: req.body.email}, function(err, response) {
         if(err || !response) {
-            res.setHeader('Content-type', 'text/html');
+            res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.email);
         } else {
             res.status(200).send('User ' + req.body.email + ' deleted.');
@@ -97,7 +97,7 @@ app.delete('/deluser', function(req, res) {
 app.put('/changepass/', function(req, res) {
     User.findOneAndUpdate({email: req.body.email}, {password: req.body.password}, function(err, response) {
         if(err || !response) {
-            res.setHeader('Content-type', 'text/html');
+            res.setHeader('Content-Type', 'text/html');
             res.status(500).send('Can\'t find user: ' + req.body.email);
         } else {
             res.status(200).send('Password changed.');
@@ -105,7 +105,17 @@ app.put('/changepass/', function(req, res) {
     })
 });
 
-// 
+// Change bankID
+app.put('/changeid/', function(req, res) {
+    User.findOneAndUpdate({email: req.body.email}, {bankID: req.body.bankID}, function(err, response) {
+        if(err || !response) {
+            res.setHeader('Content-Type', 'text/html');
+            res.status(500).send('Can\'t find user: ' + req.body.email);
+        } else {
+            res.status(200).send('Bank ID changed.');
+        }
+    })
+});
 
 //API for READing Event data
 
