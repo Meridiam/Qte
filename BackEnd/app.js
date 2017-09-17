@@ -1,7 +1,6 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    request = require('superagent'),
-    bCrypt = require('bcryptjs');
+    request = require('superagent');
 
 //Create app instance
 var app = express();
@@ -33,7 +32,7 @@ app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.param.username }, function (err, user) {
         if (err || !user) {
             res.status(500).send({ error: 'User does not exist.', trace: err});
-        } else if ( bCrypt.compareSync(req.param.password, user.password) ) {
+        } else if ( req.param.password == user.password ) {
             res.send({ isRegistered: true });
         } else {
             res.send({ isRegistered: false });
@@ -66,7 +65,7 @@ app.post('/newuser', function (req, res) {
     var newUser = new User();
 //    newUser.email = req.body.email;
     newUser.username = req.body.username;
-    newUser.password = createHash(req.body.password);
+    newUser.password = req.body.password;
     newUser.bankID = req.body.bankID;
 
     // save the user
@@ -107,7 +106,7 @@ app.delete('/deluser', function (req, res) {
 
 // Update password
 app.post('/changepass', function (req, res) {
-    User.findOneAndUpdate({ username: req.body.username }, { password: createHash(req.body.password) }, function (err, response) {
+    User.findOneAndUpdate({ username: req.body.username }, { password: req.body.password }, function (err, response) {
         if(err || !response) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
@@ -214,11 +213,6 @@ function getBalance(Username) {
         }
     });
 }
-
-//Hash a password
-var createHash = function (password) {
-    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-};
 //===============PORT=================
 var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
 app.listen(port);
