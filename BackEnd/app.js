@@ -148,7 +148,7 @@ app.post('/pay/:username/:amount', function (req, res) {
                 if (err || !payer){
                     res.status(500).send('Can\'t find user: ' + req.params.username);
                 } else {
-                    if (parseInt(req.params.amount) > getBalance(req.body.username)){
+                    if (req.params.amount > getBalance(req.body.username)){
                         res.status(500).send('Insufficient Funds.');
                     } else {
                         var myDate = new Date();
