@@ -138,7 +138,8 @@ app.post('/pay/:username/:amount', function (req, res) {
                     if (req.params.amount > getBalance(req.body.username)){
                         res.status(500).send('Insufficient Funds.');
                     } else {
-                        var transactjson = {medium: "balance", transaction_date: Date.now().toString(), amount: req.params.amount, description: "Qte"};
+                        var myDate = Date();
+                        var transactjson = {medium: "balance", transaction_date: myDate.toISOString().slice(0,9), amount: req.params.amount, description: "Qte"};
                         request.post('http://api.reimaginebanking.com/accounts/' + payee.bankID + '/deposits?key=' + process.env.API_KEY)
                         .set("Content-Type", "application/json")
                         .send(transactjson)
