@@ -83,7 +83,11 @@ app.post('/newuser', function (req, res) {
                 } else {
                     newUser.save(function (err3) {
                         if (err3) {
+<<<<<<< HEAD
                             console.log('Error in Saving user: ' + err);
+=======
+                            console.log('Error in Saving user: ' + err3);
+>>>>>>> 39824553cddfecc2d55f4cb61785e57e76e51c10
                             res.status(500).send({ error: 'Error while creating user.' });
                         }
                         if (!err3) {
