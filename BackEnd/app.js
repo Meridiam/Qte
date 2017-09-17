@@ -31,7 +31,7 @@ app.get('/confirmuser/:bankID', function(req, res) {
 app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.param.username }, function (err, user) {
         if (err || !user) {
-            res.status(500).send({ error: 'User does not exist.', trace: err});
+            res.status(500).send({ error: 'User does not exist.' });
         } else if ( req.param.password == user.password ) {
             res.send({ isRegistered: true });
         } else {
@@ -213,6 +213,7 @@ function getBalance(Username) {
         }
     });
 }
+
 //===============PORT=================
 var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
 app.listen(port);
