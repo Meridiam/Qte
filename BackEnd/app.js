@@ -159,8 +159,8 @@ app.post('/pay/:username/:amount', function (req, res) {
                         newTrans.payer = payer;
                         newTrans.payee = payee;
                         newTrans.amount = req.params.amount;
-                        payer.recentTransactions.append(newTrans);
-                        payee.recentTransactions.append(newTrans);
+                        payer.recentTransactions.push(newTrans);
+                        payee.recentTransactions.push(newTrans);
                         newTrans.save(function (err){
                             if(err) {
                                 res.status(500).send({error: 'Couldn\'t save transaction.'});
@@ -208,9 +208,9 @@ function getBalance(Username) {
             res.status(500)
                 .send('Can\'t find user: ' + Username);
         } else {
-            request.get('http://api.reimaginebanking.com/customers/' + user.bankID + '?key=' + process.env.API_KEY)
+            request.get('http://api.reimaginebanking.com/accounts/' + user.bankID + '?key=' + process.env.API_KEY)
             .end( function( err,response ) {
-            if (err) {
+            if (err || !response) {
                 res.status(500).send({ error: 'Can\'t find user info' });
             } else {
                 return response.body.balance;
@@ -221,6 +221,6 @@ function getBalance(Username) {
 }
 
 //===============PORT=================
-var port = process.env.PORT || 3000; //select your port or let it pull from your .env file
+var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
 app.listen(port);
 console.log("listening on " + port + "!");
