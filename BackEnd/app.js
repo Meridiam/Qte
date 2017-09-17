@@ -1,7 +1,6 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     request = require('superagent'),
-    bCrypt = require('bcryptjs');
     bCryptjs = require('bcryptjs');
 
 //Create app instance
@@ -78,16 +77,19 @@ app.post('/newuser', function (req, res) {
             res.status(500).send({ error: 'Error while confirming unique account.' });
         // Username does not exist, log error & redirect back
         if (!user) {
-            User.findOne({ 'bankID': req.body.bankID }, function (req, res) {
-                
-            });
-            newUser.save(function (err) {
-                if (err) {
-                    console.log('Error in Saving user: ' + err);
-                    res.status(500).send({ error: 'Error while creating user.' });
-                }
-                if (!err) {
-                    res.status(200).send('User registered.');
+            User.findOne({ 'bankID': req.body.bankID }, function (req, acc) {
+                if (err || acc) {
+                    res.status(500).send('Identical bank account already exists.');
+                } else {
+                    newUser.save(function (err) {
+                        if (err) {
+                            console.log('Error in Saving user: ' + err);
+                            res.status(500).send({ error: 'Error while creating user.' });
+                        }
+                        if (!err) {
+                            res.status(200).send('User registered.');
+                        }
+                    });
                 }
             });
         } else if (user) {
@@ -241,7 +243,7 @@ function getBalance(Username) {
 
 //Hash a password
 var createHash = function (password) {
-    return js.hashSync(password, bCryptjs.genSaltSync(10), null);
+    return bCryptjs.hashSync(password, bCryptjs.genSaltSync(10), null);
 };
 //===============PORT=================
 var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
