@@ -3,30 +3,48 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.0"
-        sha1="868dac07de10eb18a42febda8f40785e19498fbf">
-        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_d4394fd12174f44b89aae42d7899d469336384da\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\kw99c\.android\build-cache\d6427edf4f0e2c58dbe5da536955565c35797663\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.0"
-        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
-        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_63b2d8bc2f8bfe16ea1e4401405419d28e5a1847\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\kw99c\.android\build-cache\939dbc74046365be477458a07fd84cd86b015363\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
         sha1="95519720620b553f63afc789beba9ad582807f7c">
         <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_e74b5afc7f08b2885f6d5bc2536e7310e688a1f0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\.android\build-cache\c92324b0c986cdd512faf0e565af054fe81f24db\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_135b92d84b1f38de6741df4108d43ccf8e7f31e8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\.android\build-cache\c73606a1eff52f4b3c913be56eb12bba5f98e1fc\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="0b723383fcc5c9e6d233f12cf3670c153dcb9f72">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_11f4fa4385f41ec1f6021341b5f14ac49e4858e6\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\.gradle\caches\modules-2\files-2.1\com.github.kenglxn.QRGen\android\2.3.0\7b054d491170263f8d77a2377eefb47b9ad7c22a\android-2.3.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="7b054d491170263f8d77a2377eefb47b9ad7c22a">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\android-2.3.0_a84c006621cae12fb5dea744e1d982ca015470c6\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4dd2b71959c794873869955a78d90ade70bd4a35">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_d4394fd12174f44b89aae42d7899d469336384da\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -39,12 +57,39 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\kw99c\.android\build-cache\c92324b0c986cdd512faf0e565af054fe81f24db\output\jars\classes.jar"
+        jar="C:\Users\kw99c\.gradle\caches\modules-2\files-2.1\com.google.zxing\core\3.3.0\73c49077166faa4c3c0059c5f583d1d7bd1475fe\core-3.3.0.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
-        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
-        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_135b92d84b1f38de6741df4108d43ccf8e7f31e8\classes.dex" />
+        sha1="73c49077166faa4c3c0059c5f583d1d7bd1475fe">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\core-3.3.0_c5cf400f97a8b1e5c9e4d382b3590e8759bbe646\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\.android\build-cache\1060a1accbf58a8972bf69466706d0b6eb32c017\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="414c5172d9739a35339700d133288418059e7d83">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_50d1b9d2a52e34c8fe21b3809e06ecf4b00021ed\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\.gradle\caches\modules-2\files-2.1\com.github.kenglxn.QRGen\core\2.3.0\1956bc2c2c04b0c9270aa784b11b38519455dcaf\core-2.3.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="1956bc2c2c04b0c9270aa784b11b38519455dcaf">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\core-2.3.0_3d20648dcf88cae4d98332bfa3bffd1a12883385\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kw99c\.android\build-cache\d6427edf4f0e2c58dbe5da536955565c35797663\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="C:\Users\kw99c\Documents\GitHub\Qte\FrontEnd\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_63b2d8bc2f8bfe16ea1e4401405419d28e5a1847\classes.dex" />
     </item>
     <item
         is-multidex="true"
