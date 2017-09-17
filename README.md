@@ -8,3 +8,6 @@ Technologies used:
 - Express.js
 - MongoDB
 - CapitalOne Nessie API
+
+Find out more on DevPost!
+https://devpost.com/software/qte-0j8fa5
