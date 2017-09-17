@@ -38,7 +38,7 @@ app.get('/data/:username', function(req, res) {
                 if (err) {
                     res.status(500).send({ error: 'Can\'t find user info' });
                 } else {
-                    res.json({firstname: user.firstname, lastname: user.lastname, username: user.username, balance: response.body.balance, account_number: response.body.account_number});
+                    res.json({firstname: user.firstname, lastname: user.lastname, username: user.username, balance: response.body.balance, account_number: response.body.account_number, transactions: user.recentTransactions});
                 }
             });
         }
@@ -144,7 +144,7 @@ app.post('/pay/:username/:amount', function (req, res) {
                         .send(transactjson)
                         .end(function(err,response) {
                             if(err) {
-                                res.status(500).send({error: 'Failed to withdraw.'});
+                                res.status(500).send({error: 'Failed to withdraw.', trace: err});
                             }
                         });
                         request.post('http://api.reimaginebanking.com/accounts/' + payer.bankID + '/withdrawals?key=' + process.env.API_KEY)
