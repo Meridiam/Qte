@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     request = require('superagent'),
-    bcrypt = require('bcryptjs');
+    bCrypt = require('bcryptjs');
 
 //Create app instance
 var app = express();
@@ -33,7 +33,7 @@ app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.param.username }, function (err, user){
         if (err || !user) {
             res.status(500).send({ error: 'User does not exist.'});
-        } else if ( bcrypt.compareSync(req.param.password, user.password) ) {
+        } else if ( bCrypt.compareSync(req.param.password, user.password) ) {
             res.send({ isRegistered: true });
         } else {
             res.send({ isRegistered: false });
