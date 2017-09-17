@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    request = require('superagent');
+    request = require('superagent'),
+    bCrypt = require('bcryptjs');
 
 //Create app instance
 var app = express();
@@ -29,10 +30,10 @@ app.get('/confirmuser/:bankID', function(req, res) {
 
 // Check if given username/password combo is a registered user
 app.get('/verify/:username/:password', function(req, res){
-    User.findOne({ 'username': req.param.username }, function (err, user) {
-        if (err || !user) {
-            res.status(500).send({ error: 'User does not exist.' });
-        } else if ( req.param.password == user.password ) {
+    User.findOne({ 'username': req.params.username }, function (err, user) {
+        if (err /*|| !user*/) {
+            res.status(500).send({ error: 'User does not exist.', trace: err});
+        } else if ( bCrypt.compareSync(req.params.password, user.password) ) {
             res.send({ isRegistered: true });
         } else {
             res.send({ isRegistered: false });
@@ -42,7 +43,7 @@ app.get('/verify/:username/:password', function(req, res){
 
 // Get user info from CapitalOne for client-side rendering
 app.get('/data/:username', function(req, res) {
-    User.findOne({ 'username': req.param.username }, function (err, user) {
+    User.findOne({ 'username': req.params.username }, function (err, user) {
         if (err) {
             res.status(500).send({ error: 'User does not exist.' });
         } else {
@@ -65,7 +66,7 @@ app.post('/newuser', function (req, res) {
     var newUser = new User();
 //    newUser.email = req.body.email;
     newUser.username = req.body.username;
-    newUser.password = req.body.password;
+    newUser.password = createHash(req.body.password);
     newUser.bankID = req.body.bankID;
 
     // save the user
@@ -76,6 +77,9 @@ app.post('/newuser', function (req, res) {
             res.status(500).send({ error: 'Error while confirming unique account.' });
         // Username does not exist, log error & redirect back
         if (!user) {
+            User.findOne({ 'bankID': req.body.bankID }, function (req, res) {
+                
+            });
             newUser.save(function (err) {
                 if (err) {
                     console.log('Error in Saving user: ' + err);
@@ -106,7 +110,7 @@ app.delete('/deluser', function (req, res) {
 
 // Update password
 app.post('/changepass', function (req, res) {
-    User.findOneAndUpdate({ username: req.body.username }, { password: req.body.password }, function (err, response) {
+    User.findOneAndUpdate({ username: req.body.username }, { password: createHash(req.body.password) }, function (err, response) {
         if(err || !response) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
@@ -214,6 +218,10 @@ function getBalance(Username) {
     });
 }
 
+//Hash a password
+var createHash = function (password) {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+};
 //===============PORT=================
 var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
 app.listen(port);
