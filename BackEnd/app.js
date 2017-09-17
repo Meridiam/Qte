@@ -147,12 +147,12 @@ app.post('/changeid', function (req, res) {
 
 //Transaction Processing
 app.post('/pay/:username/:amount', function (req, res) {
-    User.findOne({ username: req.body.username }, function (err, payee) {
-        if (err || !payee) {
+    User.findOne({ username: req.body.username }, function (err, payer) {
+        if (err || !payer) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
-            User.findOne({ username: req.params.username }, function (err, payer) {
-                if (err || !payer){
+            User.findOne({ username: req.params.username }, function (err, payee) {
+                if (err || !payee){
                     res.status(500).send('Can\'t find user: ' + req.params.username);
                 } else {
                     if (parseInt(req.params.amount) > getBalance(req.body.username)){
@@ -230,11 +230,11 @@ function getBalance(Username) {
                 .send('Can\'t find user: ' + Username);
         } else {
             request.get('http://api.reimaginebanking.com/accounts/' + user.bankID + '?key=' + process.env.API_KEY)
-            .end( function( err,response ) {
-            if (err || !response) {
+            .end( function( err2,response ) {
+            if (err2 || !response) {
                 res.status(500).send({ error: 'Can\'t find user info' });
             } else {
-                return response.body.balance;
+                return parseInt(response.body.balance);
             }
         });
         }
