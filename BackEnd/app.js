@@ -151,14 +151,14 @@ app.post('/pay/:username/:amount', function (req, res) {
                     if (req.params.amount > getBalance(req.body.username)){
                         res.status(500).send('Insufficient Funds.');
                     } else {
-                        var myDate = Date();
-                        var transactjson = {medium: "balance", transaction_date: myDate.toISOString().slice(0,9), amount: req.params.amount, description: "Qte"};
+                        var myDate = new Date();
+                        var transactjson = {medium: "balance", transaction_date: myDate.toISOString().slice(0,9), amount: parseInt(req.params.amount), description: "Qte"};
                         request.post('http://api.reimaginebanking.com/accounts/' + payee.bankID + '/deposits?key=' + process.env.API_KEY)
                         .set("Content-Type", "application/json")
                         .send(transactjson)
                         .end(function(err,response) {
                             if(err) {
-                                res.status(500).send({error: 'Failed to withdraw.', trace: err});
+                                res.status(500).send({error: 'Failed to deposit.'});
                             }
                         });
                         request.post('http://api.reimaginebanking.com/accounts/' + payer.bankID + '/withdrawals?key=' + process.env.API_KEY)
@@ -166,7 +166,7 @@ app.post('/pay/:username/:amount', function (req, res) {
                         .send(transactjson)
                         .end(function(err,response) {
                             if(err) {
-                                res.status(500).send({error: 'Failed to deposit.'});
+                                res.status(500).send({error: 'Failed to withdraw.'});
                             }
                         });
                         var newTrans = new Transaction();
