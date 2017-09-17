@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.android.frontend.RecieptActivity">
+    <TextView
+        android:padding="16dp"
+        android:id="@+id/date_of_purchase"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date of Purchase:"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/amount_paid"
+        android:padding="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total amount:"
+        android:textSize="20sp"/>
+    <TextView
+        android:padding="16dp"
+        android:id="@+id/person_reciving_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To:"
+        android:textSize="20sp"/>
+    <Button
+        android:id="@+id/return_to_home_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return to Home"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

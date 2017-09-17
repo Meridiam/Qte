@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Confirm user registration info from CapitalOne
 
-app.get('/confirmuser/:bankID', function(req, res) {
+/*app.get('/confirmuser/:bankID', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.bankID + '?key=' + process.env.API_KEY).end(function(err,response){
         if (err){
             res.status(500).send({error: 'Can\'t find user info'});
@@ -27,7 +27,7 @@ app.get('/confirmuser/:bankID', function(req, res) {
         }
     })
 });
-
+*/
 // Check if given username/password combo is a registered user
 app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.params.username }, function (err, user) {
@@ -199,28 +199,6 @@ app.post('/pay/:username/:amount', function (req, res) {
 /*
 ===========AUXILIARY FUNCTIONS============
 */
-
-//Middleware for detecting if a user is verified
-function isRegistered(req, res, next) {
-    if (req.isAuthenticated()) {
-        console.log('cool you are a member, carry on your way');
-        next();
-    } else {
-        console.log('You are not a member');
-        res.redirect('/signup');
-    }
-}
-
-//Middleware for detecting if a user is an admin
-function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.admin) {
-        console.log('cool you are an admin, carry on your way');
-        next();
-    } else {
-        console.log('You are not an admin');
-        res.send('You are not an administrator.', 403);
-    }
-}
 
 //Get a customer account
 function getBalance(Username) {

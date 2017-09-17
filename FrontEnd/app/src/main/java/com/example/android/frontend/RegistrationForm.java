@@ -40,28 +40,37 @@ public class RegistrationForm extends AppCompatActivity {
 
         customerId = getIntent().getStringExtra("product");
 
-//        Log.d("CustomerID", customerId);
-
-        TextView cID = (EditText) findViewById(R.id.customer_id);
-        EditText mUsername = (EditText) findViewById(R.id.username);
-        EditText mPassword = (EditText) findViewById(R.id.password);
-
-        customerId = cID.getText() + "";
-        username = mUsername.getText() + "";
-        password = mPassword.getText() + "";
+//        TextView cID = (EditText) findViewById(R.id.customer_id);
+//        customerId = cID.getText() + "";
 
         Button confirmButton= (Button) findViewById(R.id.confirm);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //put what your gonna send to jerry here
+                EditText mUsername = (EditText) findViewById(R.id.username);
+                EditText mPassword = (EditText) findViewById(R.id.password);
+
+                username = mUsername.getText() + "";
+                password = mPassword.getText() + "";
+
+                Log.d("CustomerID", customerId);
+                Log.d("Username", username);
+                Log.d("Password", password);
+
                 postJsonRequest();
+
+                Intent i = new Intent(RegistrationForm.this, MainActivity.class);
+
+                i.putExtra("username", username);
+                i.putExtra("password", password);
+                startActivity(i);
             }
         });
     }
 
     private void postJsonRequest(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://qte-env.upxqgrh3im.us-east-1.elasticbeanstalk.com/newuser/";
+        String url = "http://qte-env.upxqgrh3im.us-east-1.elasticbeanstalk.com/pay/";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

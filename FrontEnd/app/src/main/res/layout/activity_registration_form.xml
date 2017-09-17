@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context="com.example.android.frontend.RegistrationForm">
 
         <android.support.design.widget.TextInputLayout
@@ -13,6 +14,7 @@
 
             <EditText
                 android:id="@+id/username"
+
                 style="@style/Input_textbox"
                 android:hint="@string/prompt_username"
                 android:maxLines="1" />
@@ -57,12 +59,11 @@
 
         <Button
             android:id="@+id/confirm"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/Buttons"
             android:layout_marginTop="16dp"
             android:text="Confirm"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
 
 </LinearLayout>
