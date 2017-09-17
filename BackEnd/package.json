@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
     "mongoose": "^4.11.11",
     "superagent": "^3.6.0"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node main.js"
   },
-  "main": "app.js",
+  "main": "main.js",
   "author": "",
   "license": "ISC",
   "description": ""
