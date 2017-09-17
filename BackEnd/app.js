@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    request = require('superagent');
+    request = require('superagent'),
+    bcrypt = require('bcryptjs');
 
 //Create app instance
 var app = express();
@@ -32,7 +33,7 @@ app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.param.username }, function (err, user){
         if (err || !user) {
             res.status(500).send({ error: 'User does not exist.'});
-        } else if (user.password == req.param.password) {
+        } else if ( bcrypt.compareSync(req.param.password, user.password) ) {
             res.send({ isRegistered: true });
         } else {
             res.send({ isRegistered: false });
@@ -64,8 +65,8 @@ app.post('/newuser', function (req, res) {
 
     var newUser = new User();
 //    newUser.email = req.body.email;
-    newUser.username = req.body.username
-    newUser.password = req.body.password;
+    newUser.username = req.body.username;
+    newUser.password = createHash(req.body.password);
     newUser.bankID = req.body.bankID;
 
     // save the user
@@ -117,7 +118,7 @@ app.delete('/deluser', function (req, res) {
 
 // Update password
 app.post('/changepass', function (req, res) {
-    User.findOneAndUpdate({ username: req.body.username }, { password: req.body.password }, function (err, response) {
+    User.findOneAndUpdate({ username: req.body.username }, { password: createHash(req.body.password) }, function (err, response) {
         if(err || !response) {
             res.status(500).send('Can\'t find user: ' + req.body.username);
         } else {
@@ -205,26 +206,6 @@ app.post('/pay/:username/:amount', function (req, res) {
 */
 
 //Middleware for detecting if a user is verified
-function isRegistered(req, res, next) {
-    if (req.isAuthenticated()) {
-        console.log('cool you are a member, carry on your way');
-        next();
-    } else {
-        console.log('You are not a member');
-        res.redirect('/signup');
-    }
-}
-
-//Middleware for detecting if a user is an admin
-function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.admin) {
-        console.log('cool you are an admin, carry on your way');
-        next();
-    } else {
-        console.log('You are not an admin');
-        res.send('You are not an administrator.', 403);
-    }
-}
 
 //Get a customer account
 function getBalance(Username) {
@@ -245,6 +226,10 @@ function getBalance(Username) {
     });
 }
 
+//Hash a password
+var createHash = function (password) {
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+};
 //===============PORT=================
 var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
 app.listen(port);
