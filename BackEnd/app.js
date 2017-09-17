@@ -31,7 +31,7 @@ app.get('/confirmuser/:bankID', function(req, res) {
 // Check if given username/password combo is a registered user
 app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.params.username }, function (err, user) {
-        if (err /*|| !user*/) {
+        if (err || !user) {
             res.status(500).send({ error: 'User does not exist.', trace: err});
         } else if ( bCryptjs.compareSync(req.params.password, user.password) ) {
             res.send({ isRegistered: true });
@@ -44,10 +44,10 @@ app.get('/verify/:username/:password', function(req, res){
 // Get user info from CapitalOne for client-side rendering
 app.get('/data/:username', function(req, res) {
     User.findOne({ 'username': req.params.username }, function (err, user) {
-        if (err) {
+        if (err || !user) {
             res.status(500).send({ error: 'User does not exist.' });
         } else {
-            request.get('http://api.reimaginebanking.com/customers/' + user.bankID + '?key=' + process.env.API_KEY)
+            request.get('http://api.reimaginebanking.com/accounts/' + user.bankID + '?key=' + process.env.API_KEY)
                 .end( function( err, response ) {
                 if (err) {
                     res.status(500).send({ error: 'Can\'t find user info' });
