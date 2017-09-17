@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Confirm user registration info from CapitalOne
 
-app.get('/confirmuser/:bankID', function(req, res) {
+/*app.get('/confirmuser/:bankID', function(req, res) {
     request.get('http://api.reimaginebanking.com/customers/' + req.params.bankID + '?key=' + process.env.API_KEY).end(function(err,response){
         if (err){
             res.status(500).send({error: 'Can\'t find user info'});
@@ -27,7 +27,7 @@ app.get('/confirmuser/:bankID', function(req, res) {
         }
     })
 });
-
+*/
 // Check if given username/password combo is a registered user
 app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.params.username }, function (err, user) {
@@ -83,11 +83,7 @@ app.post('/newuser', function (req, res) {
                 } else {
                     newUser.save(function (err3) {
                         if (err3) {
-<<<<<<< HEAD
-                            console.log('Error in Saving user: ' + err);
-=======
                             console.log('Error in Saving user: ' + err3);
->>>>>>> 39824553cddfecc2d55f4cb61785e57e76e51c10
                             res.status(500).send({ error: 'Error while creating user.' });
                         }
                         if (!err3) {
