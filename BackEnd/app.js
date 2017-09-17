@@ -31,7 +31,7 @@ app.get('/confirmuser/:bankID', function(req, res) {
 // Check if given username/password combo is a registered user
 app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.param.username }, function (err, user) {
-        if (err /*|| !user*/) {
+        if (err || !user) {
             res.status(500).send({ error: 'User does not exist.', trace: err});
         } else if ( bCrypt.compareSync(req.param.password, user.password) ) {
             res.send({ isRegistered: true });
@@ -77,9 +77,6 @@ app.post('/newuser', function (req, res) {
             res.status(500).send({ error: 'Error while confirming unique account.' });
         // Username does not exist, log error & redirect back
         if (!user) {
-            User.findOne({ 'bankID': req.body.bankID }, function (req, res) {
-                
-            });
             newUser.save(function (err) {
                 if (err) {
                     console.log('Error in Saving user: ' + err);
