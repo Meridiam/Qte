@@ -200,28 +200,6 @@ app.post('/pay/:username/:amount', function (req, res) {
 ===========AUXILIARY FUNCTIONS============
 */
 
-//Middleware for detecting if a user is verified
-function isRegistered(req, res, next) {
-    if (req.isAuthenticated()) {
-        console.log('cool you are a member, carry on your way');
-        next();
-    } else {
-        console.log('You are not a member');
-        res.redirect('/signup');
-    }
-}
-
-//Middleware for detecting if a user is an admin
-function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.admin) {
-        console.log('cool you are an admin, carry on your way');
-        next();
-    } else {
-        console.log('You are not an admin');
-        res.send('You are not an administrator.', 403);
-    }
-}
-
 //Get a customer account
 function getBalance(Username) {
     User.findOne({ 'username': Username }, function (err, user) {
