@@ -76,6 +76,9 @@ app.post('/newuser', function (req, res) {
             res.status(500).send({ error: 'Error while confirming unique account.' });
         // Username does not exist, log error & redirect back
         if (!user) {
+            User.findOne({ 'bankID': req.body.bankID }, function (req, res) {
+                
+            });
             newUser.save(function (err) {
                 if (err) {
                     console.log('Error in Saving user: ' + err);
@@ -148,7 +151,7 @@ app.post('/pay/:username/:amount', function (req, res) {
                 if (err || !payer){
                     res.status(500).send('Can\'t find user: ' + req.params.username);
                 } else {
-                    if (req.params.amount > getBalance(req.body.username)){
+                    if (parseInt(req.params.amount) > getBalance(req.body.username)){
                         res.status(500).send('Insufficient Funds.');
                     } else {
                         var myDate = Date();
