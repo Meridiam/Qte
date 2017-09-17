@@ -77,24 +77,16 @@ app.post('/newuser', function (req, res) {
             res.status(500).send({ error: 'Error while confirming unique account.' });
         // Username does not exist, log error & redirect back
         if (!user) {
-            User.findOne({ 'bankID': req.body.bankID }, function (err, b_id) {
+            User.findOne({ 'bankID': req.body.bankID }, function (req, res) {
+                
+            });
+            newUser.save(function (err) {
                 if (err) {
-                    res.status(500).send({ error: 'Error while confirming unique account.' });
+                    console.log('Error in Saving user: ' + err);
+                    res.status(500).send({ error: 'Error while creating user.' });
                 }
-                if (!b_id) {
-                    newUser.save(function (err) {
-                        if (err) {
-                            console.log('Error in Saving user: ' + err);
-                            res.status(500).send({ error: 'Error while creating user.' });
-                        }
-                        if (!err) {
-                            res.status(200).send('User registered.');
-                        }
-                    });
-                } else if (b_id) {
-                    res.status(500).send({ error: 'User already exists.' });
-                } else {
-                    res.status(500).send({ error: 'Something blew up.' });
+                if (!err) {
+                    res.status(200).send('User registered.');
                 }
             });
         } else if (user) {
