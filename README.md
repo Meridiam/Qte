@@ -7,3 +7,4 @@ Technologies used:
 - bCrypt.js
 - Express.js
 - MongoDB
+- CapitalOne Nessie API
