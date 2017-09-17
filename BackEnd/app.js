@@ -2,6 +2,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     request = require('superagent'),
     bCrypt = require('bcryptjs');
+    bCryptjs = require('bcryptjs');
 
 //Create app instance
 var app = express();
@@ -33,7 +34,7 @@ app.get('/verify/:username/:password', function(req, res){
     User.findOne({ 'username': req.params.username }, function (err, user) {
         if (err /*|| !user*/) {
             res.status(500).send({ error: 'User does not exist.', trace: err});
-        } else if ( bCrypt.compareSync(req.params.password, user.password) ) {
+        } else if ( bCryptjs.compareSync(req.params.password, user.password) ) {
             res.send({ isRegistered: true });
         } else {
             res.send({ isRegistered: false });
@@ -198,6 +199,26 @@ app.post('/pay/:username/:amount', function (req, res) {
 */
 
 //Middleware for detecting if a user is verified
+function isRegistered(req, res, next) {
+    if (req.isAuthenticated()) {
+        console.log('cool you are a member, carry on your way');
+        next();
+    } else {
+        console.log('You are not a member');
+        res.redirect('/signup');
+    }
+}
+
+//Middleware for detecting if a user is an admin
+function isAdmin(req, res, next) {
+    if (req.isAuthenticated() && req.user.admin) {
+        console.log('cool you are an admin, carry on your way');
+        next();
+    } else {
+        console.log('You are not an admin');
+        res.send('You are not an administrator.', 403);
+    }
+}
 
 //Get a customer account
 function getBalance(Username) {
@@ -220,7 +241,7 @@ function getBalance(Username) {
 
 //Hash a password
 var createHash = function (password) {
-    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+    return js.hashSync(password, bCryptjs.genSaltSync(10), null);
 };
 //===============PORT=================
 var port = process.env.PORT || 8081; //select your port or let it pull from your .env file
