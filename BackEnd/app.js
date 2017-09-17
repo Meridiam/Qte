@@ -1,7 +1,6 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     request = require('superagent'),
-    bCrypt = require('bcryptjs');
     bCryptjs = require('bcryptjs');
 
 //Create app instance
