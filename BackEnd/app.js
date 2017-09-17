@@ -212,7 +212,7 @@ function getBalance(Username) {
             if (err2 || !response) {
                 res.status(500).send({ error: 'Can\'t find user info' });
             } else {
-                return parseInt(response.body.balance);
+                return parseInt(1);
             }
         });
         }
