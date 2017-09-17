@@ -27,6 +27,19 @@ app.get('/confirmuser/:bankID', function(req, res) {
     })
 });
 
+// Check if given username/password combo is a registered user
+app.get('/verify/:username/:password', function(req, res){
+    User.findOne({ 'username': req.param.username }, function (err, user){
+        if (err || !user) {
+            res.status(500).send({ error: 'User does not exist.'});
+        } else if (user.password == req.param.password) {
+            res.send({ isRegistered: true });
+        } else {
+            res.send({ isRegistered: false });
+        }
+    });
+});
+
 // Get user info from CapitalOne for client-side rendering
 app.get('/data/:username', function(req, res) {
     User.findOne({ 'username': req.param.username }, function (err, user) {
