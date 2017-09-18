@@ -179,9 +179,9 @@ app.post('/pay/:username/:amount', function (req, res) {
                         var newTrans = new Transaction();
                         newTrans.payer = payer;
                         newTrans.payee = payee;
-                        newTrans.amount = req.params.amount;
                         payer.recentTransactions.push(newTrans);
                         payee.recentTransactions.push(newTrans);
+                        newTrans.amount = req.params.amount;
                         newTrans.save(function (err){
                             if(err) {
                                 res.status(500).send({error: 'Couldn\'t save transaction.'});
