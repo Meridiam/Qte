@@ -1,5 +1,5 @@
 # QTE
-#### The best QR code payment system this side of the planet
+#### The best QR code payment system on this side of the planet
 
 Technologies used:
 - Android Studio
@@ -9,6 +9,4 @@ Technologies used:
 - MongoDB
 - CapitalOne Nessie API
 
-Find out more on DevPost!
-
-https://devpost.com/software/qte-0j8fa5
+Find out more on [DevPost](https://devpost.com/software/qte-0j8fa5)!
